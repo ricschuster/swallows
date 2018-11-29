@@ -2,6 +2,7 @@ library(auk)
 library(lubridate)
 library(sp)
 library(sf)
+library(raster)
 
 owd <- setwd("ebd/")
 
@@ -49,4 +50,13 @@ ebird_data_month_time_obs <- ebird_data_month_time_obs[ebird_data_month_time_obs
 #####################################################
 sp <- SpatialPointsDataFrame(ebird_data_month_time_obs[,c("longitude" , "latitude")], ebird_data_month_time_obs)
 
+r <- raster(sp)
+res(r) <- 0.01
+r
 
+nc <- rasterize(coordinates(sp), r, fun='count', background=0)
+plot(nc)
+
+
+setwd("../out")
+writeRaster(nc,"tt.tif", overwrite = T)
