@@ -1,5 +1,7 @@
 library(auk)
 library(lubridate)
+library(sp)
+library(sf)
 
 owd <- setwd("ebd/")
 
@@ -39,4 +41,12 @@ ebird_data_month_time <- ebird_data_month[time_filter,]
 #filter number of observations (currently >= 10)
 ebird_data_month_time_obs <- ebird_data_month_time[ebird_data_month_time$observation_count >= 10,]
 ebird_data_month_time_obs <- ebird_data_month_time_obs[ebird_data_month_time_obs$observation_count != "X",]
+
+
+
+#####################################################
+## some analysis
+#####################################################
+sp <- SpatialPointsDataFrame(ebird_data_month_time_obs[,c("longitude" , "latitude")], ebird_data_month_time_obs)
+
 
